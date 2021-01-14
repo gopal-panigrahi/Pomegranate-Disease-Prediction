@@ -1,0 +1,23 @@
+{% extends 'main/basic.html' %}
+{% block title %} Result {% endblock %}
+
+{% block css %}
+{% load static %}
+{% endblock %}
+
+{% block body %}
+<div class="container ">
+    {% ifequal result 'No' %}
+    <div class="d-grid gap-2 col-6 mx-auto mt-5">
+        <button class="btn btn-danger fs-1 " type="button">There is no disease</button>
+    </div>
+    {% else %}
+    <div class="card mx-auto mt-5" style="width: 18rem;">
+        <img src="{% static 'img/' %}{{image}}" class="card-img-top" alt="{{image}}">
+        <div class="card-body">
+            <p class="card-text">Predicted Disease is {{result}}</p>
+        </div>
+    </div>
+    {% endifequal %}
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'main/basic.html' %}
+
+{% block title %} Welcome {% endblock %}
+
+{% block css %}
+<style>
+
+</style>
+{% load static %}
+{% endblock %}
+
+{% block body %}
+<div class="d-grid gap-2 col-6 mx-auto my-5">
+        <button class="btn btn-danger fs-1" type="button">Predict Disease</button>
+</div>
+<div class="container bg-dark text-white p-3 my-3">
+        <form action="/" method="post">
+                {% csrf_token %}
+
+                <fieldset>
+                        {% for field in form %}
+                        <div class="mb-3">
+                                <label for="temperature" class="form-label">{{ field.label_tag }}</label>
+                                {{field}}
+                        </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                </fieldset>
+
+        </form>
+
+</div>
+{% endblock %}
