@@ -1,4 +1,4 @@
-Temperature High,Humidity,Moisture(%),Disease
+Temperature,Humidity,Moisture,Disease
 32,56,78,No
 31,58,78,No
 30,57,75,No
