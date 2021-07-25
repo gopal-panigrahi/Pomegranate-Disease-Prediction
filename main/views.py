@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, request
 from .models import Farmer, Counselor, PredictedDisease
 from .forms import ClimateData
-from .predictions import get_predictions
+from .utilities import get_info, get_predictions, send_email
 
 
 def index(request):
@@ -10,7 +10,9 @@ def index(request):
         form = ClimateData(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            result = get_predictions([list(data.values())])
+            values = list(data.values())
+            values, email = values[:3], values[-1]
+            result = get_predictions([values])
             PredictedDisease(prediction=result).save()
             last_6_days = PredictedDisease.objects.order_by(
                 '-day_timestamp')[:6]
@@ -19,24 +21,14 @@ def index(request):
             for d in last_6_days:
                 if prev_d != d.prediction:
                     hasDisease = False
-
             if hasDisease == False:
                 result = "No"
                 image = "..."
-            if result == 'Bacterial Blight':
-                image = 'bacterialblight.jpeg'
-            elif result == 'Wilt':
-                image = 'wilt.jpeg'
-            elif result == 'Fruit Borer':
-                image = 'fruitborer.jpg'
-            elif result == 'Fungal Spot':
-                image = '...'
-            elif result == 'Fito Flora Blight':
-                image = '...'
-            else:
-                image = '...'
-
-            return render(request, 'main/result.html', {'result': result, 'image': image})
+            image, managements, symptoms, treatments = get_info(result)
+            if(result != 'No'):
+                send_email(result, image, managements,
+                           symptoms, treatments, email)
+            return render(request, 'main/result.html', {'result': result, 'image': image, 'managements': managements, 'symptoms': symptoms, 'treatments': treatments, })
     else:
         form = ClimateData()
     return render(request, 'main/index.html', {'form': form})

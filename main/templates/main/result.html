@@ -6,16 +6,35 @@
 {% endblock %}
 
 {% block body %}
-<div class="container ">
+<div class="container card mt-5">
     {% ifequal result 'No' %}
     <div class="d-grid gap-2 col-6 mx-auto mt-5">
         <button class="btn btn-danger fs-1 " type="button">There is no disease</button>
     </div>
     {% else %}
-    <div class="card mx-auto mt-5" style="width: 18rem;">
-        <img src="{% static 'img/' %}{{image}}" class="card-img-top" alt="{{image}}">
-        <div class="card-body">
-            <p class="card-text">Predicted Disease is {{result}}</p>
+    <div class="card m-5" style="max-width: 1000px;">
+        <div class="card-header text-center">Predicted Result</div>
+        <div class="row no-gutters">
+            <div class="col-md-3" style="border-right:1px solid rgb(224, 221, 221)">
+                <img src="{% static 'img/' %}{{image}}" class="card-img-center" alt="{{image}}">
+                <div class="card-body">
+                    <p class="card-text text-center">Predicted Disease is {{result}}</p>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="card-body">
+                    <h5 class="card-title">Managements</h5>
+                    <p class="card-text">{{managements}}</p>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Symptoms</h5>
+                    <p class="card-text">{{symptoms}}</p>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Treatments</h5>
+                    <p class="card-text">{{treatments}}</p>
+                </div>
+            </div>
         </div>
     </div>
     {% endifequal %}
